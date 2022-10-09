@@ -1,0 +1,28 @@
+Interrompendo TESTE-4 após 2 instruções
+Interrompendo TESTE-9 após 3 instruções
+Interrompendo TESTE-8 após 3 instruções
+Interrompendo TESTE-8 após 3 instruções
+Interrompendo TESTE-6 após 3 instruções
+Interrompendo TESTE-8 após 3 instruções
+Interrompendo TESTE-6 após 1 instruções
+Interrompendo TESTE-8 após 3 instruções
+Interrompendo TESTE-5 após 2 instruções
+Interrompendo TESTE-8 após 3 instruções
+Interrompendo TESTE-10 após 3 instruções
+Interrompendo TESTE-2 após 3 instruções
+Interrompendo TESTE-10 após 2 instruções
+Interrompendo TESTE-8 após 3 instruções
+Interrompendo TESTE-3 após 3 instruções
+TESTE-8 terminado. X=1. Y=3
+Interrompendo TESTE-8 após 3 instruções
+Interrompendo TESTE-2 após 2 instruções
+Interrompendo TESTE-1 após 3 instruções
+Interrompendo TESTE-3 após 3 instruções
+Interrompendo TESTE-7 após 3 instruções
+Interrompendo TESTE-3 após 3 instruções
+Interrompendo TESTE-7 após 1 instruções
+Interrompendo TESTE-3 após 3 instruções
+Interrompendo TESTE-1 após 2 instruções
+TESTE-3 terminado. X=4. Y=10
+TESTE-3 terminado. X=4. Y=10
+Interrompendo TESTE-3 após 3 instruções

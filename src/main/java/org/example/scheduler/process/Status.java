@@ -1,5 +1,5 @@
 package org.example.scheduler.process;
 
 public enum Status {
-    RUNNING, BLOCKED, READY;
+    RUNNING, BLOCKED, READY, DONE;
 }
