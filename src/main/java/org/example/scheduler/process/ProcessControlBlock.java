@@ -7,7 +7,7 @@ import org.example.scheduler.execution.Instruction;
 
 @Getter
 @Builder
-public class ProcessControlBlock {
+public class ProcessControlBlock implements Comparable<ProcessControlBlock> {
 
     private String programName;
 
@@ -42,5 +42,15 @@ public class ProcessControlBlock {
         }
 
         credits--;
+    }
+
+    @Override
+    public String toString() {
+        return programName;
+    }
+
+    @Override
+    public int compareTo(ProcessControlBlock o) {
+        return Integer.compare(credits, o.getCredits()) * -1;
     }
 }

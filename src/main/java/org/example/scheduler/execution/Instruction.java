@@ -9,8 +9,8 @@ public abstract class Instruction {
 
     public void run(ProcessControlBlock processControlBlock) throws InterruptedIOException {
         processControlBlock.setStatus(Status.RUNNING);
-        executeInstruction(processControlBlock);
         log(processControlBlock);
+        executeInstruction(processControlBlock);
     }
 
     public abstract void executeInstruction(ProcessControlBlock processControlBlock) throws InterruptedIOException;

@@ -12,8 +12,6 @@ import java.io.PrintStream;
 public class App {
     public static void main( String[] args ) throws IOException {
         int quantum = ProgramParser.getQuantum();
-        Scheduler scheduler = new Scheduler(ProgramParser.assembleProcessTable(), quantum);
-
         File logFile = new File(
                 String.format(
                         "resultados/log%s.txt",
@@ -24,6 +22,8 @@ public class App {
 
         try (PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(logFile)))) {
             System.setOut(ps);
+
+            Scheduler scheduler = new Scheduler(ProgramParser.assembleProcessTable(), quantum);
             scheduler.run();
         }
     }
