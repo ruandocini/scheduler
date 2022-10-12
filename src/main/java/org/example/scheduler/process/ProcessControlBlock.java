@@ -51,6 +51,15 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock> {
 
     @Override
     public int compareTo(ProcessControlBlock o) {
-        return Integer.compare(credits, o.getCredits()) * -1;
+        int comparisonResult = Integer.compare(credits, o.getCredits()) * -1;
+
+        if (comparisonResult == 0) {
+            if (this.status == Status.RUNNING)
+                return -1;
+            else if (o.status == Status.RUNNING)
+                return 1;
+        }
+
+        return comparisonResult;
     }
 }

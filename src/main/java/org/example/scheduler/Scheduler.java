@@ -1,7 +1,6 @@
 package org.example.scheduler;
 
 import lombok.Getter;
-import org.example.scheduler.process.PCBComparator;
 import org.example.scheduler.process.ProcessControlBlock;
 import org.example.scheduler.process.Status;
 import org.example.scheduler.structures.BlockedQueue;
@@ -34,6 +33,7 @@ public class Scheduler {
         System.out.println("Processos carregados em ordem de créditos iniciais:");
         System.out.println();
         System.out.println(running);
+        //FIXME: This does not print nodes in order of priority
         this.readyQueue.forEach(System.out::println);
         System.out.println();
     }
@@ -81,8 +81,8 @@ public class Scheduler {
         switch (running.getStatus()) {
             case RUNNING:
             case READY:
-                running.setStatus(Status.READY);
                 readyQueue.add(running);
+                running.setStatus(Status.READY);
                 break;
             case BLOCKED:
                 blockedQueue.add(running);
