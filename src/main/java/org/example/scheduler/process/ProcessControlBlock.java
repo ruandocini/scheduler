@@ -44,6 +44,10 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock> {
         credits--;
     }
 
+    public void resetCredits() {
+        this.credits = this.priority;
+    }
+
     @Override
     public String toString() {
         return programName;

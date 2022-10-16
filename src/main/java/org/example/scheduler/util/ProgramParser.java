@@ -7,6 +7,7 @@ import org.example.scheduler.execution.ExitInstruction;
 import org.example.scheduler.execution.IOInstruction;
 import org.example.scheduler.execution.Instruction;
 import org.example.scheduler.process.ProcessControlBlock;
+import org.example.scheduler.process.ProcessTable;
 import org.example.scheduler.process.Status;
 
 import java.io.BufferedReader;
@@ -15,9 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ProgramParser {
@@ -30,8 +29,8 @@ public class ProgramParser {
         return Integer.parseInt(lines[0]);
     }
 
-    public static Map<String, ProcessControlBlock> assembleProcessTable() throws IOException {
-        Map<String, ProcessControlBlock> processTable = new HashMap<>();
+    public static ProcessTable assembleProcessTable() throws IOException {
+        ProcessTable processTable = new ProcessTable();
         String[] priorities = readFileLineByLine(new File(String.format(FILE_TEMPLATE, "prioridades")));
 
         for (int i = 1; i <= 10; i++) {

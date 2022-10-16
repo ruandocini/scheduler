@@ -2,27 +2,28 @@ package org.example.scheduler;
 
 import lombok.Getter;
 import org.example.scheduler.process.ProcessControlBlock;
+import org.example.scheduler.process.ProcessTable;
 import org.example.scheduler.process.Status;
 import org.example.scheduler.structures.BlockedQueue;
+import org.example.scheduler.structures.ReadyQueue;
 
 import java.io.InterruptedIOException;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class Scheduler {
-    private final Map<String, ProcessControlBlock> processTable;
+    private final ProcessTable processTable;
 
     private final BlockedQueue blockedQueue = new BlockedQueue();
-    private final Queue<ProcessControlBlock> readyQueue = new PriorityQueue<>();
+    private final ReadyQueue readyQueue = new ReadyQueue();
 
     @Getter
     private ProcessControlBlock running;
 
     private final int quantum;
 
-    public Scheduler(Map<String, ProcessControlBlock> processTable, int quantum) {
+    public Scheduler(ProcessTable processTable, int quantum) {
         this.processTable = processTable;
         this.quantum = quantum;
 
@@ -32,9 +33,11 @@ public class Scheduler {
 
         System.out.println("Processos carregados em ordem de créditos iniciais:");
         System.out.println();
-        System.out.println(running);
-        //FIXME: This does not print nodes in order of priority
-        this.readyQueue.forEach(System.out::println);
+
+        ProcessControlBlock[] pcbArray = processTable.values().toArray(ProcessControlBlock[]::new);
+        Arrays.sort(pcbArray);
+        Arrays.stream(pcbArray).forEach(System.out::println);
+
         System.out.println();
     }
 
@@ -45,6 +48,8 @@ public class Scheduler {
                 running = readyQueue.poll();
                 continue;
             }
+
+            System.out.println("------------------------");
 
             int instructionsRan = 0;
             System.out.printf("Executando %s%n", running.getProgramName());
@@ -62,9 +67,11 @@ public class Scheduler {
                 }
             }
 
-            //TODO: Implementar lógica de reset dos créditos
-
             running.consumeCredit();
+
+            if (!areThereCreditsLeft()) {
+                resetCredits();
+            }
 
             unblockProcessIfDoneWithIO();
             requeueProcessIfRequired();
@@ -73,7 +80,6 @@ public class Scheduler {
                 System.out.printf("Interrompendo %s após %s instruções%n", running.getProgramName(), instructionsRan);
 
             running = readyQueue.poll();
-
         }
     }
 
@@ -94,8 +100,21 @@ public class Scheduler {
     }
 
     public void unblockProcessIfDoneWithIO() {
-        Optional<ProcessControlBlock> unblockedProcess = blockedQueue.poll();
+        List<ProcessControlBlock> unblockedProcess = blockedQueue.poll();
 
-        unblockedProcess.ifPresent(readyQueue::add);
+        readyQueue.addAll(unblockedProcess);
+    }
+
+    private boolean areThereCreditsLeft() {
+        return processTable
+                .values()
+                .stream()
+                .anyMatch(pcb -> pcb.getCredits() > 0);
+    }
+
+    private void resetCredits() {
+        processTable
+                .values()
+                .forEach(ProcessControlBlock::resetCredits);
     }
 }
