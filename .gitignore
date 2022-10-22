@@ -6,7 +6,6 @@ target
 .DS_STORE
 *.iml
 out
-resultados/
 .DS_Store
 
 # Log file
