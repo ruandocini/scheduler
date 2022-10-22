@@ -54,7 +54,7 @@ public class Scheduler {
 
             System.out.println("------------------------");
 
-            float instructionsRan = 0;
+            int instructionsRan = 0;
             System.out.printf("Executando %s%n", running.getProgramName());
 
             for (int i = 0; i < quantum; i++) {
