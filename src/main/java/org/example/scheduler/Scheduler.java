@@ -8,9 +8,7 @@ import org.example.scheduler.structures.BlockedQueue;
 import org.example.scheduler.structures.ReadyQueue;
 
 import java.io.InterruptedIOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Scheduler {
     private final ProcessTable processTable;
@@ -42,6 +40,11 @@ public class Scheduler {
     }
 
     public void run() {
+        float averageInstructionsRan = 0;
+        float quantumsRan = 0;
+
+        Map<String, Integer> chagesPerProcess = new HashMap<String,Integer>();
+
         while (processTable.size() > 0) {
             if (running == null) {
                 unblockProcessIfDoneWithIO();
@@ -51,7 +54,7 @@ public class Scheduler {
 
             System.out.println("------------------------");
 
-            int instructionsRan = 0;
+            float instructionsRan = 0;
             System.out.printf("Executando %s%n", running.getProgramName());
 
             for (int i = 0; i < quantum; i++) {
@@ -67,6 +70,14 @@ public class Scheduler {
                 }
             }
 
+            if (chagesPerProcess.containsKey(running.getProgramName())){
+                int currentValue = chagesPerProcess.get(running.getProgramName());
+                currentValue++;
+                chagesPerProcess.put(running.getProgramName(),currentValue);
+            } else {
+                chagesPerProcess.put(running.getProgramName(),1);
+            }
+
             running.consumeCredit();
 
             if (!areThereCreditsLeft()) {
@@ -78,9 +89,23 @@ public class Scheduler {
 
             if (!Status.DONE.equals(running.getStatus()))
                 System.out.printf("Interrompendo %s após %s instruções%n", running.getProgramName(), instructionsRan);
+                averageInstructionsRan = averageInstructionsRan + instructionsRan;
 
             running = readyQueue.poll();
+            quantumsRan++;
         }
+
+        float totalInterruptions = 0;
+        int processes = 0;
+        for (Map.Entry<String, Integer> entry : chagesPerProcess.entrySet()) {
+//            System.out.printf("Processo %s: %s interrupções\n", entry.getKey(), entry.getValue());
+            processes++;
+            totalInterruptions = totalInterruptions + entry.getValue();
+        }
+
+        System.out.printf("MEDIA DE TROCAS: %s\n", totalInterruptions/processes);
+        System.out.printf("MEDIA DE INSTRUÇÕES: %s\n", averageInstructionsRan/quantumsRan);
+        System.out.printf("QUANTUM: %s\n", quantum);
     }
 
     private void requeueProcessIfRequired() {
